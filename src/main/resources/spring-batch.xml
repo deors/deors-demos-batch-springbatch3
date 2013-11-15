@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+    xmlns:p="http://www.springframework.org/schema/p" xmlns:batch="http://www.springframework.org/schema/batch"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+       http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch-2.1.xsd">
+
+    <!-- the transaction manager - we are not going to use any -->
+    <bean id="transactionManager"
+        class="org.springframework.batch.support.transaction.ResourcelessTransactionManager" />
+
+    <!-- the job repository - we are going to use an in-memory repository -->
+    <bean id="jobRepository"
+        class="org.springframework.batch.core.repository.support.MapJobRepositoryFactoryBean">
+        <property name="transactionManager" ref="transactionManager" />
+    </bean>
+
+    <!-- the job launcher - we are going to use the simple provided implementation -->
+    <bean id="jobLauncher"
+        class="org.springframework.batch.core.launch.support.SimpleJobLauncher">
+        <property name="jobRepository" ref="jobRepository" />
+    </bean>
+
+    <!-- the sample job -->
+    <batch:job id="employeeUpdaterJob">
+        <batch:step id="firstStep">
+            <batch:tasklet>
+                <batch:chunk reader="employeeItemReader"
+                    writer="employeeUpdaterTasklet" commit-interval="5" />
+            </batch:tasklet>
+        </batch:step>
+    </batch:job>
+
+    <bean id="employeeItemReader"
+        class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="resource" value="classpath:data.csv" />
+        <property name="lineMapper">
+            <bean
+                class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+                <property name="lineTokenizer">
+                    <bean
+                        class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer">
+                        <property name="delimiter" value="," />
+                        <property name="names"
+                            value="Id, First, Last, Address, Phone, Email" />
+                    </bean>
+                </property>
+                <property name="fieldSetMapper">
+                    <bean
+                        class="org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper">
+                        <property name="prototypeBeanName"
+                            value="employee" />
+                    </bean>
+                </property>
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="employeeUpdaterTasklet" class="deors.demos.batch.springbatch2.EmployeeUpdaterTasklet">
+        <property name="employeeDao" ref="employeeDao" />
+    </bean>
+
+    <bean id="employeeDao" class="deors.demos.batch.springbatch2.EmployeeDao" />
+
+    <bean id="employee" class="deors.demos.batch.springbatch2.Employee"
+        scope="prototype" />
+
+</beans>
