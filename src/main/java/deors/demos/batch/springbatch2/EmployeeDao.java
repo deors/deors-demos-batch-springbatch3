@@ -4,6 +4,9 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * The Employee DAO. Employees are stored in-memory on a map
  * indexed by employee id.
@@ -19,6 +22,11 @@ public class EmployeeDao {
      */
     public static final Map<String, Employee> EMPLOYEES =
         new HashMap<String, Employee>();
+
+    /**
+     * The logger used to log messages and errors.
+     */
+    private static final Logger LOG = LoggerFactory.getLogger(EmployeeDao.class);
 
     /**
      * Initializes initial data.
@@ -54,6 +62,7 @@ public class EmployeeDao {
      * @return whether the given employee exists in the datastore
      */
     public boolean exist(Employee employee) {
+        LOG.debug("exist: " + employee);
         return EmployeeDao.EMPLOYEES.get(employee.getId()) != null;
     }
 
@@ -64,6 +73,7 @@ public class EmployeeDao {
      * @throws EmployeeException the employee already exists in the datastore
      */
     public void insert(Employee employee) throws EmployeeException {
+        LOG.debug("insert: " + employee);
         Employee existing = EmployeeDao.EMPLOYEES.get(employee.getId());
         if (existing == null) {
             EmployeeDao.EMPLOYEES.put(employee.getId(), employee);
@@ -79,6 +89,7 @@ public class EmployeeDao {
      * @throws EmployeeException the employee does not exist in the datastore
      */
     public void delete(Employee employee) throws EmployeeException {
+        LOG.debug("delete: " + employee);
         Employee existing = EmployeeDao.EMPLOYEES.get(employee.getId());
         if (existing == null) {
             throw new EmployeeException("unable to delete - employee does not exist: " + employee.getId());
@@ -94,6 +105,7 @@ public class EmployeeDao {
      * @throws EmployeeException the employee does not exist in the datastore
      */
     public void update(Employee employee) throws EmployeeException {
+        LOG.debug("update: " + employee);
         Employee existing = EmployeeDao.EMPLOYEES.get(employee.getId());
         if (existing == null) {
             throw new EmployeeException("unable to update - employee does not exist: " + employee.getId());
