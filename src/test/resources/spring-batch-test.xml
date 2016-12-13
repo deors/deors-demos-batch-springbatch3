@@ -60,13 +60,13 @@
         </property>
     </bean>
 
-    <bean id="employeeUpdaterTasklet" class="deors.demos.batch.springbatch2.EmployeeUpdaterTasklet">
+    <bean id="employeeUpdaterTasklet" class="deors.demos.batch.springbatch3.EmployeeUpdaterTasklet">
         <property name="employeeDao" ref="employeeDao" />
     </bean>
 
-    <bean id="employeeDao" class="deors.demos.batch.springbatch2.EmployeeDao" />
+    <bean id="employeeDao" class="deors.demos.batch.springbatch3.EmployeeDao" />
 
-    <bean id="employee" class="deors.demos.batch.springbatch2.Employee"
+    <bean id="employee" class="deors.demos.batch.springbatch3.Employee"
         scope="prototype" />
 
 </beans>

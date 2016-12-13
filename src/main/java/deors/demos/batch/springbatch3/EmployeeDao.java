@@ -1,4 +1,4 @@
-package deors.demos.batch.springbatch2;
+package deors.demos.batch.springbatch3;
 
 import java.util.Collection;
 import java.util.HashMap;
