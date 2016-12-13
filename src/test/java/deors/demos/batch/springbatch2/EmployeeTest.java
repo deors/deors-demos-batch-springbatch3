@@ -2,11 +2,16 @@ package deors.demos.batch.springbatch2;
 
 import static org.junit.Assert.assertEquals;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Calendar;
 import java.util.Date;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.Job;
+import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.JobParametersBuilder;
 import org.springframework.batch.core.launch.support.SimpleJobLauncher;
@@ -35,10 +40,11 @@ public class EmployeeTest {
         System.out.println("this is the initial employee list " + EmployeeDao.EMPLOYEES);
 
         JobParametersBuilder builder = new JobParametersBuilder();
-        builder.addDate("execution", new Date());
-        builder.addString("jobName", "employee updater job test");
         JobParameters parameters = builder.toJobParameters();
-        launcher.run(job, parameters);
+        JobExecution execution = launcher.run(job, parameters);
+        BatchStatus status = execution.getStatus();
+
+        assertEquals(BatchStatus.COMPLETED, status);
 
         System.out.println("this is the final employee list " + EmployeeDao.EMPLOYEES);
 
