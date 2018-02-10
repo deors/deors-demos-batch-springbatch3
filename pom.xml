@@ -5,12 +5,13 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <name>deors.demos.batch.springbatch3</name>
-
     <groupId>deors.demos</groupId>
-    <artifactId>deors.demos.batch.springbatch3</artifactId>
+    <artifactId>deors-demos-batch-springbatch3</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
+
+    <name>deors-demos-batch-springbatch3</name>
+    <description>demonstration of a simple Java batch processing application with Spring Batch 3</description>
 
     <properties>
         <java.version>1.8</java.version>
