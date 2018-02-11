@@ -2,11 +2,6 @@ package deors.demos.batch.springbatch3;
 
 import static org.junit.Assert.assertEquals;
 
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.Calendar;
-import java.util.Date;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.batch.core.BatchStatus;
